@@ -29,8 +29,6 @@ class Solution {
             }
 
         }
-        System.out.println(result);
-        return result;
 
     }
 }
