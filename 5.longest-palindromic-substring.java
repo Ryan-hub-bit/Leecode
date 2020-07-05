@@ -7,35 +7,40 @@
 // @lc code=start
 class Solution {
     public String longestPalindrome(String s) {
-      int [] start=new int[1];
-      int [] end=new int[1];
-      //int start=0,end==0 为什么不能这样用
-        if(s.length()<2)
+       if(s.length() == 0)
        {
-           return s;
-       }
-       for(int i=0;i<s.length();i++)
+           return "";
+       } 
+       boolean[][] dp = new boolean[s.length()][s.length()];
+       int start = 0, end = 0;
+       for(int i = 0; i < s.length(); i++)
        {
-           extendPalindrome(s,i,i,start,end);//odd palindrome
-           extendPalindrome(s,i,i+1,start,end);//even palindrome
+           for(int j = i; j>=0; j--)
+           {
+                boolean startEqEnd = s.charAt(i) == s.charAt(j);
+                if(i == j)
+                {   // a = a letter in the same position
+                    dp[i][j] = true;
+                }
+                else if( i == j+1)
+                {   // a = a or a = b  two letters in adjacent position, it depends on if they are equal
+
+                    dp[i][j] = startEqEnd;
+                }
+                else if(startEqEnd && dp[i-1][j+1])
+                {   // for two letters, if they are equal, we also need to see if the inner element are palindromic
+                    //dp[i][j] 表示 i 和 j 之间的字符串是不是palindromic
+                    dp[i][j] = true;
+                }
+
+                if(dp[i][j] && i - j > end - start)
+                {
+                   end = i; 
+                   start = j;
+                }
+           }
        }
-       
-     return s.substring(start[0],end[0]+1);
-    }
-    private void extendPalindrome(String s,int i,int j,int[] start,int[] end)
-    {
-        while(i>=0&&j<s.length()&&s.charAt(i)==s.charAt(j))
-        {
-            i--;
-            j++;
-        }
-        i++;//back to the last valid match
-        j--;
-        if(j-i+1>end[0]-start[0]+1)
-        {
-            start[0]=i;
-            end[0]=j;
-        }
+       return s.substring(start,end+1);
     }
 }
 // @lc code=end

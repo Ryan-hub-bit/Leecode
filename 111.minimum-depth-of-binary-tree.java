@@ -23,10 +23,11 @@ class Solution {
         queue.offer(root);
         while (!queue.isEmpty()) {
             int size = queue.size();
+             depth ++;
             for (int i = 0; i < size; i++) {
                 TreeNode cur = queue.poll();
                 if (cur.left == null && cur.right == null) {
-                    return depth + 1;
+                    return depth;
                 }
                 if (cur.left != null) {
                     queue.offer(cur.left);
@@ -36,7 +37,7 @@ class Solution {
                     queue.offer(cur.right);
                 }
             }
-            depth++;
+           
         }
         return -1;
     }
