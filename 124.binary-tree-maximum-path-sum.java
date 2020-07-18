@@ -20,51 +20,37 @@
  *     }
  * }
  */
-
+class ResultType{
+    int singleC, path;
+    ResultType(int singleC, int path)
+    {
+        this.singleC = singleC; 
+        this.path = path;
+    }
+}
 class Solution {
-    //return type branch and path
-
-    //branch  left + root or right + root or root
-    // path left + root +right  leftBranch or rightBranch
-    private class ResultType {
-        // singlePath: 从root往下走到任意点的最大路径，这条路径可以不包含任何点
-        // maxPath: 从树中任意到任意点的最大路径，这条路径至少包含一个点
-        int singlePath, maxPath; 
-        ResultType(int singlePath, int maxPath) {
-            this.singlePath = singlePath;
-            this.maxPath = maxPath;
-        }
-    }
-    
     public int maxPathSum(TreeNode root) {
-        // write your code here
-        if(root == null)
-        {
-            return 0;
-        }
-        ResultType res = dfs(root);
-        return res.maxPath;
+        ResultType res = helper(root);
+        return res.path;
     }
     
-    public ResultType dfs(TreeNode root)
+    public ResultType helper(TreeNode root)
     {
         if(root == null)
         {
-            return new ResultType(0,Integer.MIN_VALUE);
+            return new ResultType(0, Integer.MIN_VALUE);
         }
+
+        ResultType left = helper(root.left);
+        ResultType right = helper(root.right);
+
+       int path = Math.max(left.path, right.path);
+           path = Math.max(path,left.singleC + right.singleC + root.val);
+       int singleC = Math.max(left.singleC,right.singleC) + root.val;
+           singleC = Math.max(0,singleC);
         
-        ResultType left = dfs(root.left);
-        ResultType right = dfs(root.right);
-        
-        int maxPath = Math.max(left.maxPath, right.maxPath);
-        maxPath = Math.max(maxPath, left.singlePath+right.singlePath + root.val);
-        
-        int singlePath = Math.max(left.singlePath,right.singlePath) + root.val;
-        // System.out.println("Chian:" + Math.max(Left.chain,);
-        singlePath = Math.max(singlePath,0);
-        // System.out.println("Path:" + Path);
-    
-        return new ResultType(singlePath,maxPath);
+        return new ResultType(singleC, path);
+
     }
 }
 // @lc code=end
