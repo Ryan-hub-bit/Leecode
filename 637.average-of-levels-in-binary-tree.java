@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode id=111 lang=java
+ * @lc app=leetcode id=637 lang=java
  *
- * [111] Minimum Depth of Binary Tree
+ * [637] Average of Levels in Binary Tree
  */
 
 // @lc code=start
@@ -12,34 +12,30 @@
  * = left; this.right = right; } }
  */
 class Solution {
-        public int minDepth(TreeNode root) {
-        // bfs, then find if there is a node doesn't have both left and right return
-        // depth
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> ans = new ArrayList<>();
         if (root == null) {
-            return 0;
+            return ans;
         }
-        int depth = 0;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        queue.offer(root);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
         while (!queue.isEmpty()) {
             int size = queue.size();
-             depth ++;
+            long tmp = 0;
             for (int i = 0; i < size; i++) {
                 TreeNode cur = queue.poll();
-                if (cur.left == null && cur.right == null) {
-                    return depth;
-                }
+                tmp += cur.val;
                 if (cur.left != null) {
-                    queue.offer(cur.left);
+                    queue.add(cur.left);
                 }
-
                 if (cur.right != null) {
-                    queue.offer(cur.right);
+                    queue.add(cur.right);
                 }
             }
-           
+            double avg = (double) tmp / size;
+            ans.add(avg);
         }
-        return -1;
+        return ans;
     }
 }
 // @lc code=end

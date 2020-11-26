@@ -1,0 +1,1 @@
+DELETE FROM movies WHERE id IN (SELECT a.id FROM (SELECT id, COUNT(*) FROM movies GROUP BY id Having COUNT(*) > 1) AS a);
